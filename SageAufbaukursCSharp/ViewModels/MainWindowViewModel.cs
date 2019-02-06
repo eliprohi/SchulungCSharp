@@ -47,7 +47,7 @@ namespace SageAufbaukursCSharp.ViewModels
                     x => true,
                     (x) =>
                     {
-                        ;//Test
+                        ;
                     });
         }
         #endregion constructors
