@@ -28,7 +28,7 @@ namespace SageAufbaukursCSharp.ServiceImplementations
             }
             catch (ArgumentException ae)
             {
-                _fallbackPath = Path.Combine(Environment.GetEnvironmentVariables()["APPDATA"].ToString(), "beleg",".txt");
+                _fallbackPath = Path.Combine(Environment.GetEnvironmentVariables()["APPDATA"].ToString(), "beleg", ".txt");
                 try
                 {
                     using (var sw = new StreamWriter(_fallbackPath))
@@ -36,12 +36,37 @@ namespace SageAufbaukursCSharp.ServiceImplementations
                         sw.Write("Hello World!");
                     }
                     _problemSolver.SetProblem(_fallbackPath);
-                    Message = "Fallback wurde genutzt.";
+                    Message = "FallbackPath wurde genutzt.";
                     return false;
                 }
                 catch (Exception)
                 {
                     Fault = ae;
+                    return false;
+                }
+            }
+            catch(PathTooLongException pe)
+            {
+                var filename = Path.GetFileName(_fallbackPath);
+                var pathLength = Path.GetFullPath(_fallbackPath).Length;
+                
+                //Kalkulation Fehlt noch!
+
+
+                _fallbackPath = Path.Combine(Environment.GetEnvironmentVariables()["APPDATA"].ToString(), "beleg", ".txt");
+                try
+                {
+                    using (var sw = new StreamWriter(_fallbackPath))
+                    {
+                        sw.Write("Hello World!");
+                    }
+                    _problemSolver.SetProblem(_fallbackPath);
+                    Message = "FallbackPath wurde genutzt.";
+                    return false;
+                }
+                catch (Exception)
+                {
+                    Fault = pe;
                     return false;
                 }
             }
@@ -52,7 +77,7 @@ namespace SageAufbaukursCSharp.ServiceImplementations
             }
         }
 
-        public bool Save(object beleg, string path)
+        public bool Save(object beleg, string FilePath)
         {
             throw new NotImplementedException();
         }

@@ -10,7 +10,7 @@ namespace SageAufbaukursCSharp.Services
     {
         Exception Fault { get; set; }
         string Message { get; }
-        bool Save(object beleg, string path);
+        bool Save(object beleg, string FilePath);
         bool Save(object beleg);
     }
 }
