@@ -47,13 +47,17 @@ namespace SageAufbaukursCSharp.ServiceImplementations
             }
             catch(PathTooLongException pe)
             {
-                var filename = Path.GetFileName(_fallbackPath);
-                var pathLength = Path.GetFullPath(_fallbackPath).Length;
+                var maxPathLength = 259;
+                var fileName = Path.GetFileName(_fallbackPath);
+                var fullPathLength = Path.GetFullPath(_fallbackPath).Length;
                 
-                //Kalkulation Fehlt noch!
+                if(fullPathLength > maxPathLength)
+                {
+                    var diff = fullPathLength - maxPathLength;
+                    fileName.Substring(diff, fileName.Length - diff);
+                    var editedPath = Path.GetPathRoot(_fallbackPath) + fileName;
+                }
 
-
-                _fallbackPath = Path.Combine(Environment.GetEnvironmentVariables()["APPDATA"].ToString(), "beleg", ".txt");
                 try
                 {
                     using (var sw = new StreamWriter(_fallbackPath))
@@ -61,7 +65,7 @@ namespace SageAufbaukursCSharp.ServiceImplementations
                         sw.Write("Hello World!");
                     }
                     _problemSolver.SetProblem(_fallbackPath);
-                    Message = "FallbackPath wurde genutzt."; //Test Push
+                    Message = "Filename wurde gekürzt!.";
                     return false;
                 }
                 catch (Exception)
